@@ -14,7 +14,7 @@ This project is a NestJS-based API Gateway that serves as an entry point for cli
 - TypeScript support
 - MongoDB integration for user management
 - JWT-based authentication
-- File upload support
+- File upload support with type validation
 - Multiple service routing capabilities
 - Comprehensive testing setup with Jest
 - ESLint and Prettier for code formatting
@@ -166,8 +166,24 @@ Content-Type: multipart/form-data
   - Available services: service1, service2, service3, service4
 
 **Request Body:**
-- `file` (multipart/form-data): File to be uploaded
+- `file` (multipart/form-data): File to be uploaded (see supported file types below)
 - `text` (form-data): Text content to be processed
+
+**Supported File Types:**
+- PDF (.pdf)
+- Microsoft Word (.docx, .doc)
+- Microsoft Excel (.xlsx, .xls)
+- Microsoft PowerPoint (.pptx, .ppt)
+- OpenDocument Text (.odt)
+- OpenDocument Spreadsheet (.ods)
+- OpenDocument Presentation (.odp)
+- Text files (.txt)
+- Markdown (.md)
+- CSV (.csv)
+- JSON (.json)
+- XML (.xml)
+- HTML (.html, .htm)
+- Rich Text Format (.rtf)
 
 **Example Requests:**
 
@@ -256,6 +272,22 @@ axios.post('http://localhost:3000/gateway/service1', formData, {
 }
 ```
 
+4. Invalid File Type:
+```json
+{
+  "statusCode": 400,
+  "message": "File type not allowed. Allowed types are: .pdf, .docx, .doc, .xlsx, .xls, .pptx, .ppt, .odt, .ods, .odp, .txt, .md, .csv, .json, .xml, .html, .htm, .rtf"
+}
+```
+
+5. Document Parsing Error:
+```json
+{
+  "statusCode": 400,
+  "message": "Error parsing document"
+}
+```
+
 ### Service Endpoints
 
 The gateway routes requests to the following services:
@@ -287,6 +319,11 @@ The gateway routes requests to the following services:
   - Required
   - Must be a string
   - Minimum length: 6 characters
+
+#### File Upload Validation
+- File type must be one of the supported formats
+- File must be valid and readable
+- File must contain extractable text content
 
 #### Example Validation Errors
 ```json
