@@ -5,4 +5,4 @@ export const AI_SERVICE_URLS = {
   service4: 'http://localhost:8004/analyze',
 };
 
-export const DOCUMENT_PARSER_URL = 'http://127.0.0.1:8000/parse';
+export const DOCUMENT_PARSER_URL = 'https://document-parser-fast-api-6.onrender.com/parse';
