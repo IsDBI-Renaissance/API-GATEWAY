@@ -1,8 +1,8 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, Logger, BadRequestException } from '@nestjs/common';
 import axios from 'axios';
 import * as FormData from 'form-data';
 import { AI_SERVICE_URLS, DOCUMENT_PARSER_URL } from '../common/constants';
-import { Service2Dto } from './dto/gateway.dto'; // Import DTO
+import { Service2Dto, Service4Dto } from './dto/gateway.dto'; // Import DTO
 
 interface ParsedDocumentResponse {
   text: string;
@@ -16,6 +16,8 @@ const ALLOWED_FILE_TYPES = [
 
 @Injectable()
 export class GatewayService {
+  private readonly logger = new Logger(GatewayService.name);
+
   private async parseFile(file: Express.Multer.File): Promise<string> {
     const fileExtension = file.originalname.toLowerCase().slice(file.originalname.lastIndexOf('.'));
     if (!ALLOWED_FILE_TYPES.includes(fileExtension)) {
@@ -74,7 +76,7 @@ export class GatewayService {
       // return response.data;
       return {text: "rak fchbab haka service 1"}
     } catch (error: any) {
-      console.error('Error calling Service 1:', error.message);
+      this.logger.error('Error calling Service 1:', error.message);
       throw new BadRequestException('Error connecting to Service 1');
     }
   }
@@ -94,7 +96,7 @@ export class GatewayService {
       // return response.data;
       return { "most_likely_standard": "FAS_28", "standard_probabilities": [ { "standard": "FAS_28", "probability": 0.92, "reason": "Matches Murabaha pattern" } ], "key_features": ["Murabaha accounts detected"], "detailed_explanation": "AI-generated reasoning..." }
     } catch (error: any) {
-      console.error('Error calling Service 2:', error.message);
+      this.logger.error('Error calling Service 2:', error.message);
       throw new BadRequestException('Error connecting to Service 2');
     }
   }
@@ -122,7 +124,7 @@ export class GatewayService {
       default_quality: 60, 
     };
 
-    console.log(`Attempting to call Service 3 at URL: ${serviceUrl} with payload:`, JSON.stringify(payload, null, 2));
+    this.logger.log(`Attempting to call Service 3 at URL: ${serviceUrl} with payload:`, JSON.stringify(payload, null, 2));
 
     try {
       // const response = await axios.post(serviceUrl, payload, { // Use payload variable
@@ -133,17 +135,39 @@ export class GatewayService {
       // return response.data;
       return { text: "srevice 3 hayal " };
     } catch (error: any) {
-      console.error('Error calling Service 3 - Message:', error.message);
+      this.logger.error('Error calling Service 3 - Message:', error.message);
       if (error.response) {
-        console.error('Error calling Service 3 - Response Data:', error.response.data);
-        console.error('Error calling Service 3 - Response Status:', error.response.status);
-        console.error('Error calling Service 3 - Response Headers:', error.response.headers);
+        this.logger.error('Error calling Service 3 - Response Data:', error.response.data);
+        this.logger.error('Error calling Service 3 - Response Status:', error.response.status);
+        this.logger.error('Error calling Service 3 - Response Headers:', error.response.headers);
       }
       if (error.request) {
-        console.error('Error calling Service 3 - Request Data:', error.request); // This might be a large object
+        this.logger.error('Error calling Service 3 - Request Data:', error.request); // This might be a large object
       }
-      console.error('Error calling Service 3 - Full Error Object:', JSON.stringify(error, Object.getOwnPropertyNames(error), 2));
+      this.logger.error('Error calling Service 3 - Full Error Object:', JSON.stringify(error, Object.getOwnPropertyNames(error), 2));
       throw new BadRequestException('Error connecting to Service 3'); // Updated service number
+    }
+  }
+
+  async handleService4(data: Service4Dto) { // Renamed from handleService4Request
+    const serviceUrl = AI_SERVICE_URLS.service4;
+    if (!serviceUrl) {
+      this.logger.error('Service 4 URL not configured.'); // Use logger
+      throw new BadRequestException('Service 4 URL not configured.');
+    }
+
+    try {
+      // const response = await axios.post(serviceUrl, data, {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // });
+      // return response.data;
+      this.logger.log('Handling Service 4 request with DTO:', JSON.stringify(data));
+      return { message: 'Service 4: Request received, processing logic to be implemented', data: data };
+    } catch (error: any) {
+      this.logger.error('Error calling Service 4:', error.message);
+      throw new BadRequestException('Error connecting to Service 4');
     }
   }
 }

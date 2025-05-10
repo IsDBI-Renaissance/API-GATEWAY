@@ -13,7 +13,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { GatewayService } from './gateway.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AuditInterceptor } from '../common/audit/audit.interceptor';
-import { Service1Dto, Service2Dto } from './dto/gateway.dto'; // Import DTOs
+import { Service1Dto, Service2Dto, Service4Dto } from './dto/gateway.dto'; // Import DTOs
 
 @Controller('gateway')
 @UseGuards(JwtAuthGuard)
@@ -62,5 +62,12 @@ export class GatewayController {
     @Body() body: Service1Dto, // Service3 now takes text via Service1Dto, similar to Service1
   ) {
     return this.gatewayService.handleService3Request(body.text, file); // Corrected: Calls the service method that handles text/file
+  }
+
+  @Post('service4')
+  async handleService4(
+    @Body() service4Dto: Service4Dto,
+  ) {
+    return this.gatewayService.handleService4(service4Dto);
   }
 }
