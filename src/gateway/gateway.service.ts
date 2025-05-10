@@ -131,7 +131,7 @@ export class GatewayService {
       //   },
       // });
       // return response.data;
-      return { "srevice 3 hayal "}
+      return { text: "srevice 3 hayal " };
     } catch (error: any) {
       console.error('Error calling Service 3 - Message:', error.message);
       if (error.response) {
