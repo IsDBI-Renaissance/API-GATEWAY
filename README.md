@@ -82,6 +82,8 @@ src/
 │   ├── users.service.ts
 │   └── users.module.ts
 ├── gateway/        # Gateway module
+│   ├── dto/
+│   │   └── gateway.dto.ts
 │   ├── gateway.controller.ts
 │   ├── gateway.service.ts
 │   └── gateway.module.ts
@@ -208,7 +210,7 @@ curl -X POST http://localhost:3000/gateway/service2 \
 ```
 
 #### POST /gateway/service3
-Handles requests for service3. Accepts an optional file and optional text data.
+Handles requests for service3. Accepts an optional file and optional text data (similar to Service1).
 
 **Headers:**
 ```
@@ -217,15 +219,74 @@ Content-Type: multipart/form-data
 ```
 
 **Request Body (form-data):**
-- `file` (optional): File to be uploaded. See supported file types below.
-- `text` (optional): Text content.
+- `file` (optional): File to be uploaded. See supported file types with Service1.
+- `text` (optional): Text content (Corresponds to `Service1Dto`).
 
 **Example Request (cURL):**
 ```bash
 curl -X POST http://localhost:3000/gateway/service3 \
   -H "Authorization: Bearer <your_jwt_token>" \
-  -F "file=@/path/to/another/file.pdf" \
-  -F "text=Further context for service3"
+  -F "file=@/path/to/your/document.pdf" \
+  -F "text=Sample text content for service3"
+```
+
+#### POST /gateway/service4
+Handles requests for service4. Accepts a JSON payload with transaction details.
+
+**Headers:**
+```
+Authorization: Bearer <your_jwt_token>
+Content-Type: application/json
+```
+
+**Request Body (JSON - `Service4Dto` structure example):**
+```json
+{
+  "transaction_id": "string",
+  "timestamp": "YYYY-MM-DDTHH:mm:ssZ",
+  "amount": "number",
+  "currency": "string",
+  "description": "string",
+  "merchant_details": { 
+    "name": "string",
+    "category": "string"
+  },
+  "additional_context": { 
+    "source_system": "string" 
+  },
+  "previous_transaction": { 
+    "reference_id": "string"
+  },
+  "commodity_details": { 
+    "type": "string",
+    "grade": "string"
+  }
+}
+```
+
+**Example Request (cURL):**
+```bash
+curl -X POST http://localhost:3000/gateway/service4 \
+  -H "Authorization: Bearer <your_jwt_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "transaction_id": "TXN123456789",
+    "timestamp": "2023-10-26T10:30:00Z",
+    "amount": 150.75,
+    "currency": "USD",
+    "description": "Payment for services rendered",
+    "merchant_details": {
+      "name": "Global Corp",
+      "category": "Software"
+    },
+    "additional_context": {
+      "source_system": "CRM-Alpha"
+    },
+    "commodity_details": {
+      "type": "Crude Oil",
+      "grade": "Brent"
+    }
+  }'
 ```
 
 **Supported File Types (for service1 and service3):**
