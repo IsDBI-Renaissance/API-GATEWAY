@@ -62,16 +62,17 @@ export class GatewayService {
     }
 
     try {
-      const response = await axios.post(serviceUrl, {
-        input_text: processedText,
-        language: 'english',
-        visualize: true,
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      return response.data;
+      // const response = await axios.post(serviceUrl, {
+      //   input_text: processedText,
+      //   language: 'english',
+      //   visualize: true,
+      // }, {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // });
+      // return response.data;
+      return {text: "rak fchbab haka service 1"}
     } catch (error: any) {
       console.error('Error calling Service 1:', error.message);
       throw new BadRequestException('Error connecting to Service 1');
@@ -85,12 +86,13 @@ export class GatewayService {
     }
 
     try {
-      const response = await axios.post(serviceUrl, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      return response.data;
+      // const response = await axios.post(serviceUrl, data, {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // });
+      // return response.data;
+      return { "most_likely_standard": "FAS_28", "standard_probabilities": [ { "standard": "FAS_28", "probability": 0.92, "reason": "Matches Murabaha pattern" } ], "key_features": ["Murabaha accounts detected"], "detailed_explanation": "AI-generated reasoning..." }
     } catch (error: any) {
       console.error('Error calling Service 2:', error.message);
       throw new BadRequestException('Error connecting to Service 2');
@@ -123,12 +125,13 @@ export class GatewayService {
     console.log(`Attempting to call Service 3 at URL: ${serviceUrl} with payload:`, JSON.stringify(payload, null, 2));
 
     try {
-      const response = await axios.post(serviceUrl, payload, { // Use payload variable
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      return response.data;
+      // const response = await axios.post(serviceUrl, payload, { // Use payload variable
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // });
+      // return response.data;
+      return { "srevice 3 hayal "}
     } catch (error: any) {
       console.error('Error calling Service 3 - Message:', error.message);
       if (error.response) {
