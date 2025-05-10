@@ -117,7 +117,6 @@ export class GatewayService {
     if (!serviceUrl) {
       throw new BadRequestException('Service 3 URL not configured.'); // Updated service number
     }
-
     const payload = {
       standard_text: finalText, 
       max_retries: 5, 
@@ -127,13 +126,12 @@ export class GatewayService {
     this.logger.log(`Attempting to call Service 3 at URL: ${serviceUrl} with payload:`, JSON.stringify(payload, null, 2));
 
     try {
-      // const response = await axios.post(serviceUrl, payload, { // Use payload variable
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      // });
-      // return response.data;
-      return { text: "srevice 3 hayal " };
+      const response = await axios.post(serviceUrl, payload, { // Use payload variable
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return response.data;
     } catch (error: any) {
       this.logger.error('Error calling Service 3 - Message:', error.message);
       if (error.response) {
