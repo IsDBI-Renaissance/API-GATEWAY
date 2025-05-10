@@ -64,17 +64,16 @@ export class GatewayService {
     }
 
     try {
-      // const response = await axios.post(serviceUrl, {
-      //   input_text: processedText,
-      //   language: 'english',
-      //   visualize: true,
-      // }, {
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      // });
-      // return response.data;
-      return {text: "rak fchbab haka service 1"}
+      const response = await axios.post(serviceUrl, {
+        input_text: processedText,
+        language: 'english',
+        visualize: false,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return response.data;
     } catch (error: any) {
       this.logger.error('Error calling Service 1:', error.message);
       throw new BadRequestException('Error connecting to Service 1');
