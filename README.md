@@ -152,8 +152,8 @@ All gateway endpoints require authentication. Include the JWT token in the Autho
 Authorization: Bearer <your_jwt_token>
 ```
 
-#### POST /gateway/:service
-Handles requests to different services with file upload support. Requires authentication.
+#### POST /gateway/service1
+Handles requests for service1. Accepts an optional file and optional text data.
 
 **Headers:**
 ```
@@ -161,15 +161,74 @@ Authorization: Bearer <your_jwt_token>
 Content-Type: multipart/form-data
 ```
 
-**Parameters:**
-- `service` (path parameter): The target service to route the request to
-  - Available services: service1, service2, service3, service4
+**Request Body (form-data):**
+- `file` (optional): File to be uploaded. See supported file types below.
+- `text` (optional): Text content related to the file or standalone.
 
-**Request Body:**
-- `file` (multipart/form-data): File to be uploaded (see supported file types below)
-- `text` (form-data): Text content to be processed
+**Example Request (cURL):**
+```bash
+curl -X POST http://localhost:3000/gateway/service1 \
+  -H "Authorization: Bearer <your_jwt_token>" \
+  -F "file=@/path/to/your/file.txt" \
+  -F "text=Sample text content for service1"
+```
 
-**Supported File Types:**
+#### POST /gateway/service2
+Handles requests for service2. Accepts a JSON payload with journal entries and optional additional context.
+
+**Headers:**
+```
+Authorization: Bearer <your_jwt_token>
+Content-Type: application/json
+```
+
+**Request Body (JSON):**
+```json
+{
+  "journal_entries": [
+    { "account": "string", "debit": "number", "credit": "number" },
+    { "account": "string", "debit": "number", "credit": "number" }
+  ],
+  "additional_context": "string (optional)"
+}
+```
+
+**Example Request (cURL):**
+```bash
+curl -X POST http://localhost:3000/gateway/service2 \
+  -H "Authorization: Bearer <your_jwt_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "journal_entries": [
+          { "account": "ACC001", "debit": 100, "credit": 0 },
+          { "account": "ACC002", "debit": 0, "credit": 100 }
+        ],
+        "additional_context": "Monthly financial closing entries"
+      }'
+```
+
+#### POST /gateway/service3
+Handles requests for service3. Accepts an optional file and optional text data.
+
+**Headers:**
+```
+Authorization: Bearer <your_jwt_token>
+Content-Type: multipart/form-data
+```
+
+**Request Body (form-data):**
+- `file` (optional): File to be uploaded. See supported file types below.
+- `text` (optional): Text content.
+
+**Example Request (cURL):**
+```bash
+curl -X POST http://localhost:3000/gateway/service3 \
+  -H "Authorization: Bearer <your_jwt_token>" \
+  -F "file=@/path/to/another/file.pdf" \
+  -F "text=Further context for service3"
+```
+
+**Supported File Types (for service1 and service3):**
 - PDF (.pdf)
 - Microsoft Word (.docx, .doc)
 - Microsoft Excel (.xlsx, .xls)
@@ -184,109 +243,6 @@ Content-Type: multipart/form-data
 - XML (.xml)
 - HTML (.html, .htm)
 - Rich Text Format (.rtf)
-
-**Example Requests:**
-
-1. Using cURL:
-```bash
-curl -X POST http://localhost:3000/gateway/service1 \
-  -H "Authorization: Bearer <your_jwt_token>" \
-  -F "file=@/path/to/file" \
-  -F "text=your text content"
-```
-
-2. Using Postman:
-- Method: POST
-- URL: `http://localhost:3000/gateway/service1`
-- Headers:
-  ```
-  Authorization: Bearer <your_jwt_token>
-  ```
-- Body (form-data):
-  - Key: `file` (Type: File) - Select your file
-  - Key: `text` (Type: Text) - Enter your text content
-
-3. Using JavaScript/Fetch:
-```javascript
-const formData = new FormData();
-formData.append('file', fileInput.files[0]);
-formData.append('text', 'your text content');
-
-fetch('http://localhost:3000/gateway/service1', {
-  method: 'POST',
-  headers: {
-    'Authorization': 'Bearer <your_jwt_token>'
-  },
-  body: formData
-})
-.then(response => response.json())
-.then(data => console.log(data));
-```
-
-4. Using Axios:
-```javascript
-const formData = new FormData();
-formData.append('file', fileInput.files[0]);
-formData.append('text', 'your text content');
-
-axios.post('http://localhost:3000/gateway/service1', formData, {
-  headers: {
-    'Authorization': 'Bearer <your_jwt_token>',
-    'Content-Type': 'multipart/form-data'
-  }
-})
-.then(response => console.log(response.data))
-.catch(error => console.error(error));
-```
-
-**Response:**
-```json
-{
-  "text": "combined text content from input and parsed file"
-}
-```
-
-**Error Responses:**
-
-1. Unauthorized (No Token):
-```json
-{
-  "statusCode": 401,
-  "message": "Unauthorized"
-}
-```
-
-2. Invalid Token:
-```json
-{
-  "statusCode": 401,
-  "message": "Invalid token"
-}
-```
-
-3. Invalid Service:
-```json
-{
-  "statusCode": 400,
-  "message": "Invalid service name"
-}
-```
-
-4. Invalid File Type:
-```json
-{
-  "statusCode": 400,
-  "message": "File type not allowed. Allowed types are: .pdf, .docx, .doc, .xlsx, .xls, .pptx, .ppt, .odt, .ods, .odp, .txt, .md, .csv, .json, .xml, .html, .htm, .rtf"
-}
-```
-
-5. Document Parsing Error:
-```json
-{
-  "statusCode": 400,
-  "message": "Error parsing document"
-}
-```
 
 ### Service Endpoints
 
