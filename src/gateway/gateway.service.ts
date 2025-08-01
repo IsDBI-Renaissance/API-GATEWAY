@@ -64,16 +64,7 @@ export class GatewayService {
     }
 
     try {
-      const response = await axios.post(serviceUrl, {
-        input_text: processedText,
-        language: 'english',
-        visualize: false,
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      return response.data;
+       return { message: 'Service 1: Request received, processing logic to be implemented', data: data };
     } catch (error: any) {
       this.logger.error('Error calling Service 1:', error.message);
       throw new BadRequestException('Error connecting to Service 1');
