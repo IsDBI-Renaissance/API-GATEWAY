@@ -64,7 +64,7 @@ export class GatewayService {
     }
 
     try {
-       return { message: 'Service 1: Request received, processing logic to be implemented', data: data };
+       return { message: 'Service 1: Request received, processing logic to be implemented'};
     } catch (error: any) {
       this.logger.error('Error calling Service 1:', error.message);
       throw new BadRequestException('Error connecting to Service 1');
