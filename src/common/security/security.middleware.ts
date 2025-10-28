@@ -2,7 +2,7 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
-import cors from 'cors'; // ✅ FIXED import
+import cors from 'cors';  // ✅ FIXED import
 import { securityConfig } from './security.config';
 
 @Injectable()
