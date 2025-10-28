@@ -1,8 +1,8 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common';
 import axios from 'axios';
-import * as FormData from 'form-data';
+import FormData from 'form-data'; // ✅ FIXED import
 import { AI_SERVICE_URLS, DOCUMENT_PARSER_URL } from '../common/constants';
-import { Service2Dto, Service4Dto } from './dto/gateway.dto'; // Import DTO
+import { Service2Dto, Service4Dto } from './dto/gateway.dto';
 
 interface ParsedDocumentResponse {
   text: string;
