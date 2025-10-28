@@ -10,7 +10,7 @@ import { SecurityMiddleware } from './common/security/security.middleware';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017/nestjs-gateway'),
+    MongooseModule.forRoot('mongodb+srv://nnbakhti_db_user:cOnMaFMpz6vuYgDG@mizanex.stxug4m.mongodb.net/?appName=mizanex'),
     GatewayModule,
     AuthModule,
     UsersModule,
